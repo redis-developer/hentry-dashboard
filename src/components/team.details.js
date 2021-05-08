@@ -31,7 +31,7 @@ export const TeamDetailsCard = ({ id }) => {
       </h1>
       <section className="text-gray-700">
         <div className="container px-2">
-          <div className="flex flex-wrap text-center items-center flex-grow-0 justify-center ">
+          <div className="flex flex-wrap text-center items-center flex-grow justify-center ">
             {devices.map(device => (
               <DeviceCard data={device} />
             ))}
