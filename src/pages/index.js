@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState } from "react"
 import { Link } from "gatsby"
+import { Router } from "@reach/router"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
@@ -34,14 +35,14 @@ const IndexPage = () => {
                       id="hero-field"
                       name="hero-field"
                       placeholder="my-team-id"
-                      autoComplete="off" 
+                      autoComplete="off"
                       onChange={e => {
                         setTeamID(e.currentTarget.value)
                       }}
                       className="flex-grow w-full px-4 py-2 mb-4 mr-4 text-base text-black transition duration-1000 ease-in-out transform bg-gray-200 rounded-lg focus:outline-none focus:border-purple-500 sm:mb-0 focus:bg-white focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
                     />
                   </div>
-                  <Link to={`team/${teamID}`}>
+                  <Link to={`/team?id=${teamID}`}>
                     <button className="flex items-center px-6 py-2 font-semibold text-white transition duration-500 ease-in-out transform bg-black rounded-lg hover:bg-gray-900 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2">
                       Go !
                     </button>
