@@ -1,42 +1,43 @@
-import * as React from "react"
-import PropTypes from "prop-types"
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
+import IconButton from "@material-ui/core/IconButton"
+import HomeIcon from "@material-ui/icons/Home"
 import { Link } from "gatsby"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    minWidth: 200,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}))
+
+export default function ButtonAppBar({ siteTitle }) {
+  const classes = useStyles()
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <Toolbar>
+            <IconButton edge="start" color="inherit" aria-label="close">
+              <HomeIcon />
+            </IconButton>
+
+            <Typography variant="h6" className={classes.title}>
+              {siteTitle}
+            </Typography>
+          </Toolbar>
         </Link>
-      </h1>
+      </AppBar>
     </div>
-  </header>
-)
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
+  )
 }
-
-Header.defaultProps = {
-  siteTitle: ``,
-}
-
-export default Header
