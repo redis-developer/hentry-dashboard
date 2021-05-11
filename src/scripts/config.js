@@ -1,3 +1,4 @@
 export const server = {
-  url: "http://localhost:8000",
+    api: "http://40.119.165.213:8000",
+    feed: "http://40.119.165.213:9000",
 }
