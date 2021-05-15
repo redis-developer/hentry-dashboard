@@ -7,8 +7,6 @@ import {
   HorizontalGridLines,
   VerticalGridLines,
   LineSeries,
-  LineMarkSeries,
-  MarkSeries,
   Crosshair,
 } from "react-vis"
 
