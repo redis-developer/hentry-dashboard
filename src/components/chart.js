@@ -16,14 +16,7 @@ import "react-vis/dist/style.css"
 
 export const Graph = ({ data, yAxisTitle }) => {
   //   const processedData = data.map(entry => ({ x: entry[0], y: entry[1] }))
-  const processedData = []
-  let i
-  for (i = 0; i < data.length; i++) {
-    processedData.push({
-      x: parseInt(data[i][0]),
-      y: parseInt(data[i][1]),
-    })
-  }
+  const processedData = data
 
   /**
    * event handler functions
@@ -149,6 +142,7 @@ export const Graph = ({ data, yAxisTitle }) => {
 
       <LineSeries
         color="black"
+        animation="wobbly"
         data={processedData}
         onNearestX={_updateNearestValue}
         opacity={0.5}

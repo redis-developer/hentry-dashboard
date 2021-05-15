@@ -10,4 +10,12 @@ const getDeviceTimeSeriesById = async (category, id) => {
   return data.payload
 }
 
-export { getDeviceTimeSeriesById }
+const pollDeviceTimeSeriesUpdatesById = async (category, id, from) => {
+  const result = await axios.get(
+    `${server.api}/timeseries/${category}/poll/${id}/${from}`
+  )
+  const { data } = await result
+  return data.payload
+}
+
+export { getDeviceTimeSeriesById, pollDeviceTimeSeriesUpdatesById }
