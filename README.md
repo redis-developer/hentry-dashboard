@@ -1,105 +1,108 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
+# Hentry
+
 <p align="center">
-  <a href="https://www.gatsbyjs.com">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
+  <img width="460"  src="https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/hentry-logo.png">
 </p>
-<h1 align="center">
-  Gatsby's default starter
-</h1>
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+Hentry, is a hackathon sentry that allows organizers to provide a fair competing platform in the online events. Since plagiarism and re-use are the major problems in such submissions which ruins the spirit of hackathons,  It utilizes intelligent algorithms to calculate project entropy and snapshots of participants' projects in real-time and visualizes the same for the organizers as a live graph in a pleasant user interface.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.com/docs/gatsby-starters/)._
 
-## 🚀 Quick start
+## Components
 
-1.  **Create a Gatsby site.**
+- [Hentry Server](https://github.com/YashKumarVerma/hentry-server) : web server written in TypeScript to act as the service to expose data for hentry-dashboards. Provides routes which utilize Redis-JSON and Redis-TimesSeries to return data for business logic. Handle user creation, team creation, initial dashboard data fetch and polling updates for live graphs.
+- [Hentry Client](https://github.com/YashKumarVerma/hentry-client) : CLI written in Golang utilizing go-routines for performance ⚡ which calculates project entropy and snapshots and emits them to hentry-feeder
 
-    Use the Gatsby CLI to create a new site, specifying the default starter.
+- [Hentry Feeder](https://github.com/YashKumarVerma/hentry-feeder) : micro service written in GoLang utilizing go-routines for performance, exposes a simple HTTP server to accept requests from henry-client instances running on participants' devices and write data to Redis TimeSeries Database.
+-  [Hentry Dashboard](https://github.com/YashKumarVerma/hentry-dashboard) : a responsive and dynamic single page application build using React and TailWind CSS, designed in a monochrome and minimal UI to focus on important data. Also provisions realtime graphs which render live feed of project status.
 
-    ```shell
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
 
-1.  **Start developing.**
+API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#intro)
 
-    Navigate into your new site’s directory and start it up.
+## Architecture
+![https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png](https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png)
 
-    ```shell
-    cd my-default-starter/
-    gatsby develop
-    ```
+## Hentry Client
 
-1.  **Open the source code and start editing!**
+![https://i.imgur.com/hfATaxW.png](https://i.imgur.com/hfATaxW.png)
 
-    Your site is now running at `http://localhost:8000`!
+- Generates a unique signature of each machine, used to uniquely identify machine.
+- Allows user to log into hentry servers, create and join teams, and register devices.
+- Can identity old devices and avoid duplicate logins, based on device signatures.
+- Interactive command line interface, with indicators showing validation results.
+- Written implementing go-routines, utilizes minimal system resources, non blocking.
+- Creates an internal directory mapping as hashmap and transmits data to hentry-server
+- Written in Golang, can be compiled for any operating system and architecture.
+- Deployment configurations embedded into binary, just run on terminal and use. If required, can pass data into binary for custom configurations.
+- Who uses this
+  - The participants of the event are supposed to place this in their project directory. That's all they are required to do.
+- Compiling Again?
+  - open hentry-client, then run `make build` and you'll get your binary in the `build folder`
+- ToDo
+  - add encryption to allow secure communication and no tampering of data.
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.com/tutorial/part-five/#introducing-graphiql)._
+User Interface
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+![https://i.imgur.com/kJ68yQI.png](https://i.imgur.com/kJ68yQI.png)
+![https://i.imgur.com/qXyTdN7.png](https://i.imgur.com/qXyTdN7.png)
+![https://i.imgur.com/YqchQvD.png](https://i.imgur.com/YqchQvD.png)
 
-## 🚀 Quick start (Gatsby Cloud)
+Picks up device name by itself
+![https://i.imgur.com/nVfna3p.png](https://i.imgur.com/nVfna3p.png)
+![https://i.imgur.com/FHlHBha.png](https://i.imgur.com/FHlHBha.png)
 
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
+Now the client will automatically calculate snapshot score and entropy of all directories which are child of the directory in which hentry-client is present.
 
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-default)
 
-## 🧐 What's inside?
+## Hentry Server
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+![https://i.imgur.com/TlCaJbc.png](https://i.imgur.com/TlCaJbc.png)
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+- Hentry Server is written in typescript with modern tooling to quickly prototype the application.
+- The server is available on docker hub as yashkumarverma[](https://hub.docker.com/repository/docker/yashkumarverma/hentry-server)/hentry-server
+- Connects to reddismod instance and ensures that connection with json and timeseries module is made.
+- Provides routes for team formation, team joining, device registration, fetching all timeseries data and polling for updates in timeseries data.
+- To run locally, run `yarn install` then `yarn start:dev` or use the docker image.
+- Follows a uniform logging scheme to make it easier to debug.
+- Supports keywords like `now` to fetch all data till the present timestamp.
+- Divided into modules and services keep related codebase together and therefore make it easier to maintain.
+- Configurations can be accessed in `config` directory.
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+![https://i.imgur.com/9HEwswE.png](https://i.imgur.com/9HEwswE.png)
+![https://i.imgur.com/SqBM14v.png](https://i.imgur.com/SqBM14v.png)
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+## Hentry Feeder
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+![https://i.imgur.com/gXnIxAV.png](https://i.imgur.com/gXnIxAV.png)
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+- Hentry feeder is a tiny microservice, designed to run in clusters depending upon the number of participants on the system.
+- Only purpose is to inject data received from the clients (hentry-client which can go upto thousands in number depending on event) into redis timeseries database.
+- To compile manually, run `make build` or compile `internal/main.go` for your architecture.
+- Also available as a docker container : [yashkumarverma/hentry-feeder](https://hub.docker.com/repository/docker/yashkumarverma/hentry-feeder)
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.com/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+## Hentry Dashboard
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.com/docs/gatsby-config/) for more detail).
+![https://i.imgur.com/AFGOWdM.png](https://i.imgur.com/AFGOWdM.png)
+- main interface that is used by event organizers.
+- clean, minimal ui
+- option to search via team ID in landing page
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.com/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+![https://i.imgur.com/PebX7cQ.png](https://i.imgur.com/PebX7cQ.png)
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.com/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+- shows the friendly name of each device in team, and also their platforms.
+![https://i.imgur.com/XOUdZYP.png](https://i.imgur.com/XOUdZYP.png)
 
-9.  **`LICENSE`**: This Gatsby starter is licensed under the 0BSD license. This means that you can see this file as a placeholder and replace it with your own license.
+- When a device a hovered 
+![https://i.imgur.com/Nqp6ecN.png](https://i.imgur.com/Nqp6ecN.png)
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+- opening the details of any device shows a live graph of project snapshot and entropy.
+- (refer video)
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+## Deployment
+after running respective docker images, something like this should be accessible. or you can use the hosted docker images directly instead of building them manually.
 
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.com/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.com/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.com/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
-
-## 💫 Deploy
-
-[Build, Deploy, and Host On The Only Cloud Built For Gatsby](https://www.gatsbyjs.com/cloud/)
-
-Gatsby Cloud is an end-to-end cloud platform specifically built for the Gatsby framework that combines a modern developer experience with an optimized, global edge network.
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+The images are
+- yashkumarverma/hentry-server
+- yashkumarverma/hentry-feeder
+- redismod
+![https://i.imgur.com/aGDxRG1.png](https://i.imgur.com/aGDxRG1.png)
