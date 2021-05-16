@@ -26,7 +26,7 @@ export const TimeGraph = ({ snapshot, entropy }) => {
       <ChartRow height="200">
         <YAxis
           id="axis1"
-          label="Lines of Code"
+          label="Units"
           min={0}
           max={100}
           width="60"

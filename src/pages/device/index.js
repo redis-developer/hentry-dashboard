@@ -149,7 +149,7 @@ const DeviceAnalysis = data => {
       </Layout>
       <div className="m-4">
         <Graph
-          yAxisTitle="Lines of Code"
+          yAxisTitle="Units"
           data={currentMode === "snapshot" ? snapshot : entropy}
         />
       </div>
